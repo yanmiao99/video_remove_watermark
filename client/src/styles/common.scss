@@ -1,0 +1,57 @@
+.header_operation {
+  background: var(--el-bg-color-overlay);
+  padding: 10px 20px;
+  box-sizing: border-box;
+  display: flex;
+  margin-bottom: 10px;
+  border: 1px solid var(--el-border-color-lighter);
+
+  .el-form {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+
+    .el-form-item {
+      margin-bottom: 0;
+
+      &:last-child {
+        margin-left: auto;
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.footer_operation {
+  width: 100%;
+  background: var(--el-bg-color-overlay);
+  padding: 10px 20px;
+  box-sizing: border-box;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid var(--el-border-color-lighter);
+  z-index: 99;
+}
+
+[v-cloak] {
+  display: none;
+}
+
+// 图片加载失败
+.image_error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #999;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+// 页面加载进度条
+#nprogress .bar {
+  background-color: var(--el-color-primary) !important;
+}
