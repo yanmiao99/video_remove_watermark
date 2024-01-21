@@ -1,6 +1,5 @@
 <template>
   <div class="setting">
-
     <div class="page_header">
       <h2 class="page_title">设置</h2>
       <div class="page_action">
@@ -112,6 +111,8 @@
 <script setup>
 import { ElMessage } from "element-plus"
 import { CirclePlus, Delete, CircleCheck, ChatLineSquare, Postcard, Link, User, Message, Star, CircleClose, Edit } from "@element-plus/icons-vue"
+import { getSettingInfo, setSettingInfo } from '@/api/setting'
+import { onMounted } from "vue"
 
 const settingRef = ref(null)
 const settingRules = ref({
@@ -142,6 +143,19 @@ const settingForm = ref({
   weChat: '',
 })
 
+onMounted(() => {
+  getSettingInfoData()
+})
+
+// 获取设置信息
+const getSettingInfoData = async () => {
+  const res = await getSettingInfo()
+  if (res) {
+    settingForm.value = res
+  }
+}
+
+// 判断是否能编辑
 const notEditable = ref(true)
 
 // 编辑
@@ -152,14 +166,15 @@ const handleEdit = () => {
 // 取消
 const handleCancel = () => {
   notEditable.value = true
-  // TODO 重新获取数据
+  getSettingInfoData()
 }
 
 // 保存
 const handleSave = () => {
-  settingRef.value.validate((valid) => {
+  settingRef.value.validate(async (valid) => {
     if (valid) {
-      console.log('settingForm.value========', settingForm.value);
+      await setSettingInfo(settingForm.value)
+      ElMessage.success('保存成功')
       notEditable.value = true
     } else {
       ElMessage.warning('请完善信息')
@@ -211,7 +226,7 @@ const handleDeletePlatform = (item, index) => {
     }
 
     .platform_box {
-      width: 31%;
+      flex: 1 0 31%; // 不伸缩, 不收缩, 宽度31%
       margin-right: 20px;
       margin-bottom: 20px;
     }
