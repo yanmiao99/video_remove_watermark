@@ -21,7 +21,7 @@
 
 ## 项目截图
 
-![iShot_2024-01-20_13.02.40](https://qny.weizulin.cn/images/202401201307616.png)
+![image-20240121151831071](https://qny.weizulin.cn/images/202401211518174.png)
 
 ![iShot_2024-01-20_13.04.41](https://qny.weizulin.cn/images/202401201307643.png)
 

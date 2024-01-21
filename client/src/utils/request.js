@@ -2,10 +2,9 @@
 
 // 引入文件
 import axios from "axios";
-import { ElMessage } from "element-plus";
 import router from "../router/router";
 import storage from "./storage";
-import { load } from "../components/loading/loading";
+import { ElMessage } from "element-plus";
 
 // 无效token
 const TOKEN_INVALID = "Token认证失败, 请重新登陆";
@@ -28,22 +27,14 @@ service.interceptors.request.use((req) => {
     token = "";
   }
   if (!headers.Authorization) headers.Authorization = "Bearer " + token;
-
-  // 开启 loading 定时器，定时器结束后再显示 loading , 并且 将定时器存储到请求参数中
-  req.timer = setTimeout(() => {
-    load.show();
-  }, 1000);
-
   return req;
 });
 
 // 响应拦截
 service.interceptors.response.use(
   (res) => {
-    res.config.timer && clearTimeout(res.config.timer); // 取消定时器
     const { code, data, msg } = res.data;
     if (code === 200) {
-      load.hide(); // 隐藏 loading
       return Promise.resolve(data);
     } else {
       ElMessage.error(msg || NETWORK_ERROR); // 常规报错
@@ -51,8 +42,6 @@ service.interceptors.response.use(
     }
   },
   (error) => {
-    error.config.timer && clearTimeout(error.config.timer); // 取消定时器
-    load.hide();
     if (error.response && error.response.status === 401) {
       // token 失效，跳转到登录页
       storage.clearItem("userInfo"); // 移除 token

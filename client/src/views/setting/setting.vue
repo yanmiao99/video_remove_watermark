@@ -4,7 +4,19 @@
     <div class="page_header">
       <h2 class="page_title">设置</h2>
       <div class="page_action">
-        <el-button type="primary" @click="handleSave" :icon="CircleCheck">保存</el-button>
+        <el-button type="primary" @click="handleEdit" :icon="Edit" v-if="notEditable">编辑</el-button>
+        <el-space v-else>
+          <el-popconfirm title="确定取消吗？" confirmButtonText="确定" cancelButtonText="取消" @confirm="handleCancel">
+            <template #reference>
+              <el-button :icon="CircleClose">取消</el-button>
+            </template>
+          </el-popconfirm>
+          <el-popconfirm title="确定保存并发布吗？" confirmButtonText="确定" cancelButtonText="取消" @confirm="handleSave">
+            <template #reference>
+              <el-button type="primary" :icon="CircleCheck">保存</el-button>
+            </template>
+          </el-popconfirm>
+        </el-space>
       </div>
     </div>
 
@@ -15,16 +27,42 @@
             <span>公告管理</span>
           </template>
           <el-form-item prop="announcement" label="公告">
-            <el-input clearable type="text" :prefix-icon="ChatLineSquare" placeholder="请输入内容" maxlength="50"
-              show-word-limit v-model="settingForm.announcement" />
+            <el-input :disabled="notEditable" clearable type="text" :prefix-icon="ChatLineSquare" placeholder="请输入内容"
+              maxlength="50" show-word-limit v-model="settingForm.announcement" />
           </el-form-item>
         </el-card>
 
         <el-card shadow="never" class="card_wrapper">
           <template #header>
+            <span>信息配置</span>
+          </template>
+          <div class="info_allocation">
+            <el-form-item prop="author" label="作者">
+              <el-input :disabled="notEditable" clearable type="text" :prefix-icon="User" placeholder="请输入作者"
+                v-model="settingForm.author" />
+            </el-form-item>
+            <el-form-item prop="email" label="Email">
+              <el-input :disabled="notEditable" clearable type="text" :prefix-icon="Message" placeholder="请输入Email"
+                v-model="settingForm.email" />
+            </el-form-item>
+            <el-form-item prop="github" label="Github">
+              <el-input :disabled="notEditable" clearable type="text" placeholder="请输入Github" v-model="settingForm.github"
+                :prefix-icon="Link" />
+            </el-form-item>
+            <el-form-item prop="weChat" label="公众号">
+              <el-input :disabled="notEditable" clearable type="text" placeholder="请输入微信公众号" v-model="settingForm.weChat"
+                :prefix-icon="Link" />
+            </el-form-item>
+          </div>
+        </el-card>
+
+
+        <el-card shadow="never" class="card_wrapper">
+          <template #header>
             <div class="card_header">
               <span>平台管理</span>
-              <el-button type="primary" text @click="handleAddPlatform" :icon="CirclePlus">添加平台</el-button>
+              <el-button type="primary" text @click="handleAddPlatform" :disabled="notEditable"
+                :icon="CirclePlus">添加平台</el-button>
             </div>
           </template>
           <div class="card_content_flex" v-if="settingForm.platform.length">
@@ -33,49 +71,38 @@
                 <template #header>
                   <div class="card_header">
                     <span>平台 {{ index + 1 }}</span>
-                    <el-button type="danger" text @click="handleDeletePlatform(item, index)"
-                      :icon="Delete">删除平台</el-button>
+                    <el-popconfirm title="确定删除该平台吗？" confirmButtonText="确定" cancelButtonText="取消"
+                      @confirm="handleDeletePlatform(item, index)">
+                      <template #reference>
+                        <el-button type="danger" :disabled="notEditable" text :icon="Delete">删除平台</el-button>
+                      </template>
+                    </el-popconfirm>
                   </div>
                 </template>
                 <el-form-item label-width="0" :prop="'platform.' + index + '.name'"
                   :rules="[{ required: true, message: '请输入平台名称', trigger: 'blur' }]">
-                  <el-input clearable v-model="item.name" placeholder="请输入平台名称" :prefix-icon="Postcard" />
+                  <el-input :disabled="notEditable" clearable v-model="item.name" placeholder="请输入平台名称"
+                    :prefix-icon="Postcard" />
                 </el-form-item>
 
                 <el-form-item label-width="0" :prop="'platform.' + index + '.url'"
                   :rules="[{ required: true, message: '请输入链接', trigger: 'blur' }]">
-                  <el-input clearable v-model="item.url" placeholder="请输入链接" :prefix-icon="Link" />
+                  <el-input :disabled="notEditable" clearable v-model="item.url" placeholder="请输入链接"
+                    :prefix-icon="Link" />
                 </el-form-item>
 
                 <el-form-item label-width="0" :prop="'platform.' + index + '.icon'"
                   :rules="[{ required: true, message: '请输入图标', trigger: 'blur' }]">
-                  <el-input clearable v-model="item.icon" placeholder="请输入图标" :prefix-icon="Star" />
+                  <el-input :disabled="notEditable" clearable v-model="item.icon" placeholder="请输入图标"
+                    :prefix-icon="Star" />
                 </el-form-item>
               </el-card>
             </div>
           </div>
           <el-empty v-else description="暂无平台">
-            <el-button type="primary" @click="handleAddPlatform" :icon="CirclePlus">添加平台</el-button>
+            <el-button type="primary" @click="handleAddPlatform" :disabled="notEditable"
+              :icon="CirclePlus">添加平台</el-button>
           </el-empty>
-        </el-card>
-        <el-card shadow="never" class="card_wrapper">
-          <template #header>
-            <span>信息配置</span>
-          </template>
-          <div class="info_allocation">
-            <el-form-item prop="author" label="作者">
-              <el-input clearable type="text" :prefix-icon="User" placeholder="请输入作者" v-model="settingForm.author" />
-            </el-form-item>
-            <el-form-item prop="email" label="Email">
-              <el-input clearable type="text" :prefix-icon="Message" placeholder="请输入Email" v-model="settingForm.email" />
-            </el-form-item>
-            <el-form-item prop="github" label="Github">
-              <el-input clearable type="text" placeholder="请输入Github" v-model="settingForm.github" :prefix-icon="Link" />
-            </el-form-item>
-            <el-form-item prop="weChat" label="公众号">
-              <el-input clearable type="text" placeholder="请输入微信公众号" v-model="settingForm.weChat" :prefix-icon="Link" />
-            </el-form-item>
-          </div>
         </el-card>
       </el-form>
     </div>
@@ -84,7 +111,7 @@
 
 <script setup>
 import { ElMessage } from "element-plus"
-import { CirclePlus, Delete, CircleCheck, ChatLineSquare, Postcard, Link, User, Message, Star } from "@element-plus/icons-vue"
+import { CirclePlus, Delete, CircleCheck, ChatLineSquare, Postcard, Link, User, Message, Star, CircleClose, Edit } from "@element-plus/icons-vue"
 
 const settingRef = ref(null)
 const settingRules = ref({
@@ -100,7 +127,7 @@ const settingRules = ref({
   ],
   github: [
     { required: true, message: '请输入Github', trigger: 'blur' },
-    { pattern: /^https?:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+$/, message: '请输入正确的Github地址', trigger: 'blur' },
+    { pattern: /^(http|https):\/\/([\w.]+\/?)\S*/, message: '请输入正确的Github', trigger: 'blur' },
   ],
   weChat: [
     { required: true, message: '请输入微信公众号', trigger: 'blur' },
@@ -115,11 +142,25 @@ const settingForm = ref({
   weChat: '',
 })
 
+const notEditable = ref(true)
+
+// 编辑
+const handleEdit = () => {
+  notEditable.value = false
+}
+
+// 取消
+const handleCancel = () => {
+  notEditable.value = true
+  // TODO 重新获取数据
+}
+
 // 保存
 const handleSave = () => {
   settingRef.value.validate((valid) => {
     if (valid) {
       console.log('settingForm.value========', settingForm.value);
+      notEditable.value = true
     } else {
       ElMessage.warning('请完善信息')
     }
