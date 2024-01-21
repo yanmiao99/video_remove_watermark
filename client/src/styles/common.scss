@@ -55,3 +55,33 @@
 #nprogress .bar {
   background-color: var(--el-color-primary) !important;
 }
+
+.page_header{
+  padding: 10px 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--el-border-color-lighter);
+  margin-bottom: 10px;
+  background: var(--el-bg-color-overlay);
+  position: fixed;
+  top: 50px;
+  left: 0;
+  right: 0;
+  z-index: 99;
+
+  .page_title{
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .page_action{
+    display: flex;
+    align-items: center;
+
+    .el-button{
+      margin-left: 10px;
+    }
+  }
+}

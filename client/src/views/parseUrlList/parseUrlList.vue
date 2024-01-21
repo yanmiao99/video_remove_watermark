@@ -119,7 +119,13 @@
           </div>
         </template>
         <div class="card_content">
-          <video :src="currentDetailsData.downurl" controls class="card_video" />
+          <video v-if="!videoError" :src="currentDetailsData.downurl" controls class="card_video" @error="handleError" />
+          <div class="video_error" v-else>
+            <el-icon size="40">
+              <VideoCamera />
+            </el-icon>
+            <p>视频链接已失效</p>
+          </div>
         </div>
       </el-card>
       <template #footer></template>
@@ -128,7 +134,7 @@
 </template>
 
 <script setup>
-import { Pointer, Search, Refresh, CopyDocument, Download } from "@element-plus/icons-vue";
+import { Pointer, Search, Refresh, CopyDocument, Download, VideoCamera } from "@element-plus/icons-vue";
 import { useBaseTable } from "@/hooks/useBaseTable.js";
 import { getParseUrlList } from "@/api/parseUrlList";
 import { useBasicDialog } from "@/hooks/basicDialog/useBasicDialog.js";
@@ -160,6 +166,11 @@ const currentDetailsData = ref({})
 const handleDetail = (row) => {
   currentDetailsData.value = row
   openDialog('查看详情')
+}
+
+const videoError = ref(false)
+const handleError = () => {
+  videoError.value = true
 }
 
 
@@ -211,6 +222,21 @@ const handleDetail = (row) => {
     height: 300px;
     border: none;
     outline: none;
+  }
+
+  .video_error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 300px;
+    border: 1px solid #ebeef5;
+    border-radius: 5px;
+    color: #909399;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #f5f7fa;
   }
 }
 </style>

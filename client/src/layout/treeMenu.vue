@@ -56,6 +56,7 @@ defineProps({
   &.is-active {
     background-color: var(--el-color-primary-light-8);
     border-radius: 10px;
+    height: 40px;
   }
 }
 
