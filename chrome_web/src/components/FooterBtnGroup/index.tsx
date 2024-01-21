@@ -1,8 +1,11 @@
 import { DownloadOutlined, RightOutlined } from "@ant-design/icons"
-import { App, Button, Image, List, Space, Tooltip } from "antd"
+import { App, Button, Image, List, Tooltip } from "antd"
 
 import "./index.less"
 
+import { useContext } from "react"
+
+import { SettingContext } from "~context/settingContext"
 import useDebounce from "~hooks/useDebounce"
 
 const settingList = [
@@ -15,6 +18,7 @@ const settingList = [
 
 const FooterBtnGroup = () => {
   const { modal } = App.useApp()
+  const settingContext = useContext<any>(SettingContext)
 
   // 跳转下载设置页面
   const handleGoDownSetting = () => {
@@ -30,24 +34,30 @@ const FooterBtnGroup = () => {
         title: "关于作者",
         content: (
           <div className="about_author_modal">
-            <div className="about_author_modal_item">
-              <h3 className="about_author_modal_label">作者 : </h3>
-              <div className="about_author_modal_value"> yanmiao </div>
-            </div>
-            <div className="about_author_modal_item">
-              <h3 className="about_author_modal_label">邮箱 : </h3>
-              <div className="about_author_modal_value"> 503084944@qq.com </div>
-            </div>
-            <div className="about_author_modal_item">
-              <h3 className="about_author_modal_label">微信 : </h3>
-              <div className="about_author_modal_value">
-                <Image
-                  src={require("~assets/images/info/weixin.png")}
-                  className="about_author_modal_img"
-                />
-                <p>添加微信请注明来意~</p>
-              </div>
-            </div>
+            {settingContext && (
+              <>
+                <div className="about_author_modal_item">
+                  <h3 className="about_author_modal_label">作者 : </h3>
+                  <div className="about_author_modal_value">
+                    {settingContext?.author}
+                  </div>
+                </div>
+                <div className="about_author_modal_item">
+                  <h3 className="about_author_modal_label">邮箱 : </h3>
+                  <div className="about_author_modal_value">
+                    {settingContext?.email}
+                  </div>
+                </div>
+                <div className="about_author_modal_item">
+                  <h3 className="about_author_modal_label">Github : </h3>
+                  <div className="about_author_modal_value">
+                    <a href={settingContext?.github}>
+                      {settingContext?.github}
+                    </a>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         )
       },
@@ -55,10 +65,7 @@ const FooterBtnGroup = () => {
         title: "关注公众号",
         content: (
           <div className="weixin_modal">
-            <Image
-              src="https://ai.woftsun.cn/qrcode.jpg"
-              className="modal_img"
-            />
+            <Image src={settingContext?.weChat} className="modal_img" />
             <div className="modal_title">扫码关注公众号</div>
           </div>
         )

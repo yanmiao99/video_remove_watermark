@@ -15,13 +15,15 @@ import {
   Skeleton,
   Space
 } from "antd"
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 
 import DownloadBtn from "~components/DownloadBtn"
 import FooterBtnGroup from "~components/FooterBtnGroup"
 import OneWord from "~components/OneWord"
+import { SettingContext } from "~context/settingContext"
 import useDebounce from "~hooks/useDebounce"
 import PlatformList from "~layout/PopupLayout/components/PlatformList"
+import { BASE_URL } from "~store/Global"
 import { ThemeAntd } from "~theme"
 import { handleCopyText } from "~utils"
 
@@ -33,6 +35,7 @@ function PopupDetails() {
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm()
   const inputRef = useRef(null)
+  const settingContext = useContext<any>(SettingContext)
 
   // 提交表单
   const onFinish = useDebounce(async (values) => {
@@ -42,12 +45,8 @@ function PopupDetails() {
 
     setLoading(true)
     setDataDetails({})
-    const res = await fetch(
-      `http://127.0.0.1:3000/api/parseUrl/query?url=${url}`
-    )
+    const res = await fetch(`${BASE_URL}/parseUrl/query?url=${url}`)
     const data = await res.json()
-
-    console.log("data========", data)
 
     if (data.code === 200) {
       const resData = data.data
@@ -68,7 +67,7 @@ function PopupDetails() {
     <ThemeAntd>
       <div className="container_wrapper">
         <Alert
-          message="本工具仅供学习交流使用，请勿用于商业用途，否则后果自负。"
+          message={settingContext.announcement}
           type="info"
           showIcon
           style={{ width: "100%" }}
@@ -165,7 +164,16 @@ function PopupDetails() {
               <Card
                 title="视频内容"
                 extra={
-                  <DownloadBtn title="下载" content={dataDetails.downurl} />
+                  <Space>
+                    <DownloadBtn title="下载" content={dataDetails.downurl} />
+                    <Button
+                      type="primary"
+                      size="small"
+                      onClick={() => handleCopyText(dataDetails.downurl)}
+                      icon={<CopyOutlined />}>
+                      复制链接
+                    </Button>
+                  </Space>
                 }>
                 <video
                   src={dataDetails.downurl}

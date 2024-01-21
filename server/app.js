@@ -33,7 +33,7 @@ const authenticate = (req, res, next) => {
 app.use('/api/shortLink', require('./routes/shortLink.js'));
 app.use('/api/parseUrl', require('./routes/parseUrl.js'));
 app.use('/api/user', require('./routes/user.js'));
-// app.use('/api/setting', require('./routes/setting.js'));
+app.use('/api/setting', require('./routes/setting.js'));
 
 // 统一身份验证 (需要token登录的接口)
 const createRouter = (path, handler) => {

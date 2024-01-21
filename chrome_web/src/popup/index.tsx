@@ -1,10 +1,13 @@
+import { SettingProvider } from "~context/settingContext"
 import PopupLayout from "~layout/PopupLayout"
 import { ThemeAntd } from "~theme"
 
 function IndexPopup() {
   return (
     <ThemeAntd>
-      <PopupLayout />
+      <SettingProvider>
+        <PopupLayout />
+      </SettingProvider>
     </ThemeAntd>
   )
 }
