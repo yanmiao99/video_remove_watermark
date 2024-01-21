@@ -1,14 +1,15 @@
 ## 项目搭建步骤
 
 1️⃣ 创建数据库
-	数据库名称 `video_watermark_remove_db`
-	数据库账号 `root`
-	数据库密码 `12345678`
+
+- 数据库名称 `video_watermark_remove_db`
+- 数据库账号 `root`
+- 数据库密码 `12345678`
 
 2️⃣ 运行后端项目 `server`
-	运行后端项目后会自动使用 `orm` 进行建表操作
 
-​	需要安装 `nodemod` 辅助项目运行
+- 运行后端项目后会自动使用 `orm` 进行建表操作
+- 需要安装 `nodemod` 辅助项目运行
 
 3️⃣ 后台项目 `client`
 
@@ -16,7 +17,7 @@
 
 5️⃣ 项目整体使用`pnpm`
 
-​	整体项目运行命令 `pnpm run dev`
+- 整体项目运行命令 `pnpm run dev`
 
 ## 项目截图
 
