@@ -7,9 +7,9 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
+    "username": "video_watermark_remove_db",
+    "password": "12345678",
+    "database": "video_watermark_remove_db",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }

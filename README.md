@@ -10,10 +10,19 @@
 
 - 运行后端项目后会自动使用 `orm` 进行建表操作
 - 需要安装 `nodemod` 辅助项目运行
+- 开发环境 : `pnpm run dev`
+- 生产环境 : `pnpm run build`
 
 3️⃣ 后台项目 `client`
 
+- 开发环境 : `pnpm run dev`
+- 生产环境 : `pnpm run build`
+
 4️⃣ 前台项目 `chrome_web`
+
+- 开发环境 : `pnpm run dev`
+- 生产环境 : `pnpm run build`
+- 生产环境打包 : `pnpm run build --zip`
 
 5️⃣ 项目整体使用`pnpm`
 
