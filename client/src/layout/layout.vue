@@ -39,7 +39,7 @@
             </template>
           </el-dropdown>
           <!-- 暗黑模式 -->
-          <el-button size="small" @click="toggleDark" round style="margin-left: 10px">
+          <el-button size="small" @click="toggleTheme" round style="margin-left: 10px">
             <el-icon v-if="isDark">
               <Sunny />
             </el-icon>
@@ -90,14 +90,14 @@ import { useRouter } from "vue-router"
 import { routerMenu } from "../router/routerMenu";
 import { getCurrentUserInfo, postChangePassword } from "../api/user";
 import { ElMessage } from "element-plus";
-import { useDark } from "@vueuse/core";
-import { commonStore } from "../store/common";
 import config from "../config/config";
 import storage from "../utils/storage";
 import TreeMenu from "./treeMenu.vue"
 import BreadCrumb from "./breadCrumb.vue";
 import { useBasicDialog } from "@/hooks/basicDialog/useBasicDialog.js";
 import BasicDialog from "@/hooks/basicDialog/basicDialog.vue";
+import { useThemeAnimation } from "@/hooks/useThemeAnimation.js";
+
 
 const {
   visible,
@@ -105,16 +105,9 @@ const {
   closeDialog
 } = useBasicDialog()
 
-const store = commonStore()
-
-const isDark = useDark();
-const toggleDark = () => {
-  isDark.value = !isDark.value
-  store.setDarkMode(isDark.value === true ? 'dark' : 'light')
-};
-
-
 const router = useRouter()
+
+const { toggleTheme, isDark } = useThemeAnimation()
 
 let isCollapse = ref(false)
 

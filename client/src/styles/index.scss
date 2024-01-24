@@ -1,2 +1,26 @@
 // 导入深色主题
 @use "element-plus/theme-chalk/src/dark/css-vars.scss" as *;
+
+// 暗黑模式和明亮模式切换动画
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+// .dark 类名是暗黑模式的类名，可以根据自己的需要修改, 这里在 index.html 中进行了定义
+.dark::view-transition-old(root) {
+  z-index: 9999;
+}
+
+.dark::view-transition-new(root) {
+  z-index: 1;
+}
